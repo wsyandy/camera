@@ -1,0 +1,13 @@
+ManifestFileVersion: 0
+CRC: 14847977
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: micro_ghost
+      Dependencies: {}
+    Info_1:
+      Name: micro_dragon
+      Dependencies: {}
+    Info_2:
+      Name: tvmonitor
+      Dependencies: {}

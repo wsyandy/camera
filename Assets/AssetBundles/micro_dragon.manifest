@@ -1,0 +1,40 @@
+ManifestFileVersion: 0
+CRC: 2857260722
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 8cf4b3ae3e4e5b34b831bbc366e73df9
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 4e10ae0befbef846e84a804f5f526262
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 111
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: df5bd056c05fd488c9a0f5a79f4719e6, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 136
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+- Class: 143
+  Script: {instanceID: 0}
+Assets:
+- Assets/Dragon/micro_dragon.prefab
+Dependencies: []
