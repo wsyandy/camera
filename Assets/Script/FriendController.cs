@@ -81,6 +81,10 @@ public class FriendController : MonoBehaviour {
 		}
 	}
 
+	public void RecordClick(){
+		SceneManager.LoadScene ("Zone", LoadSceneMode.Single);
+	}
+
 	IEnumerator DeleteCardSync(){
 		if (cardid != 0) {
 			WWWForm form = new WWWForm ();

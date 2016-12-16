@@ -4,9 +4,8 @@ using LitJson;
 using System.Collections.Generic;
 
 public class PetController : MonoBehaviour {
-	public GameObject pet;
+	public GameObject pet,fingerGesture,box;
 	public UILabel debugLabel;
-	public GameObject fingerGesture;
 	public Vector3 target;
 	public bool can_move;
 
@@ -162,16 +161,22 @@ public class PetController : MonoBehaviour {
 	IEnumerator SendCard(){
 		int send = PlayerPrefs.GetInt ("send",0);
 		if (send == 1) {
+			box.SetActive (true);
+			yield return new WaitForSeconds (1);
+			box.transform.parent = pet.transform;
+			box.transform.localPosition = Vector3.zero;
 			uictrl.dialog.gameObject.SetActive (true);
 			uictrl.dialogLabel.text = "主人，我去去就回";
 			target = new Vector3 (0, 0, 200);
 			yield return new WaitForSeconds (3);
+			box.transform.parent = null;
+			box.SetActive (false);
 			target = Vector3.zero;
 			yield return new WaitForSeconds (3);
 			uictrl.dialogLabel.text = "卡牌已经送达";
 			yield return new WaitForSeconds (1);
 			uictrl.dialog.gameObject.SetActive (false);
-			send = 0;
+			PlayerPrefs.SetInt ("send", 0);
 		}
 	}
 
@@ -198,8 +203,13 @@ public class PetController : MonoBehaviour {
 				uictrl.dialogLabel.text=name+"赠送给您卡牌了";
 				target = new Vector3 (0, 0, 200);
 				yield return new WaitForSeconds (3);
+				box.SetActive (true);
+				box.transform.parent = pet.transform;
+				box.transform.localPosition = Vector3.zero;
 				target = Vector3.zero;
 				yield return new WaitForSeconds (3);
+				box.transform.parent = null;
+				box.SetActive (false);
 				uictrl.dialogLabel.text = "卡牌已经送达";
 				yield return new WaitForSeconds (1);
 				uictrl.dialog.gameObject.SetActive (false);

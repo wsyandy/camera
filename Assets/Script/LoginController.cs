@@ -3,10 +3,9 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using LitJson;
 
-public class Login : MonoBehaviour {
+public class LoginController : MonoBehaviour {
 
 	public UILabel nameLabel,debugLabel;
-	public int arg1=0,arg2=1;
 
 	void Start(){
 		string name = PlayerPrefs.GetString ("name","");
@@ -15,7 +14,15 @@ public class Login : MonoBehaviour {
 		}
 	}
 
-	public void OnClick(int position,string name){
+	public void OnInsiderClick(){
+		Login (0, nameLabel.text);
+	}
+
+	public void OnOutSiderClick(){
+		Login (1, nameLabel.text);
+	}
+
+	private void Login(int position,string name){
 		string ip = position == 0 ? "172.18.32.75" : "159.226.21.146";
 		string url="http://"+ip+":3306/api/";
 		PlayerPrefs.SetString ("url", url);

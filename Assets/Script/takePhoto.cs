@@ -26,7 +26,6 @@ public class takePhoto : MonoBehaviour
 	public bool isgetGesture;
 	public string ip;
 
-
 	private string _recognizerUrl,_gestureUrl,_logoUrl,_messageUrl;
 	/// <summary>
 	/// 截图的矩形区域
@@ -51,15 +50,6 @@ public class takePhoto : MonoBehaviour
 	/// The logo card.
 	/// </summary>
 	public UISprite _logoCard;
-	/// <summary>
-	/// 好友列表
-	/// </summary>
-	public UISprite _friendList;
-	/// <summary>
-	/// 最新消息
-	/// </summary>
-	public UISprite _messageDialog;
-	public UISprite _point;
 
 	private float SCREEN_SHOT_WIDTH=1000;
 	private float x=0, y=0;
@@ -300,7 +290,7 @@ public class takePhoto : MonoBehaviour
 		}
 	}
 
-	IEnumerator LoadGood(string name){
+	private IEnumerator LoadGood(string name){
 		WWWForm form = new WWWForm ();
 		form.AddField ("modelname", name);
 		WWW w = new WWW (url+"getobjectmodel", form);
