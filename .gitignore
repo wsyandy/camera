@@ -1,0 +1,10 @@
+camera
+Temp
+camera.app
+*.sln
+*.csproj
+Library
+obj
+*.userprefs
+*.unityproj
+Assets/Textures
