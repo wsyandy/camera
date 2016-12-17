@@ -5,8 +5,8 @@ using LitJson;
 
 public class FriendController : MonoBehaviour {
 	public UISprite[] friends,cards;
-	public UILabel debugLabel,title,content;
-	public UISprite messagBox;
+	public UILabel debugLabel;
+	public UIGrid tagGrid,articleGrid;
 
 	private int userid,friendid,cardid;
 	private string url;
@@ -22,6 +22,8 @@ public class FriendController : MonoBehaviour {
 	void Start () {
 		friendid = 0;
 		cardid = 0;
+		StartCoroutine (LoadTagSync ());
+		StartCoroutine (LoadArticleSync ());
 	}
 	
 	// Update is called once per frame
@@ -72,17 +74,32 @@ public class FriendController : MonoBehaviour {
 		SceneManager.LoadScene ("start", LoadSceneMode.Single);
 	}
 
-	public void MessageClick(){
-		if (messagBox.gameObject.activeSelf) {
-			messagBox.gameObject.SetActive (false);
-		} else {
-			messagBox.gameObject.SetActive (true);
-			StartCoroutine (LoadMessageSync());
-		}
-	}
-
 	public void RecordClick(){
 		SceneManager.LoadScene ("Zone", LoadSceneMode.Single);
+	}
+
+	private IEnumerator LoadTagSync(){
+		WWWForm form = new WWWForm ();
+		form.AddField ("userid", userid);
+		WWW w = new WWW (url + "gettags", form);
+		yield return w;
+		if (w.error != null) {
+			Debug.Log (w.error);
+		} else {
+			Debug.Log (w.text);
+			JsonData data = JsonMapper.ToObject (w.text);
+			for (int i = 0; i < data ["Subscribed"].Count; i++) {
+				GameObject gridItem = NGUITools.AddChild (tagGrid.gameObject, (GameObject)(Resources.Load ("TagItem")));
+				gridItem.GetComponent<TagItem> ().tagLabel.text = (string)data ["Subscribed"] [i];
+			}
+			for (int i = 0; i < data ["UnSubscribed"].Count; i++) {
+				GameObject gridItem = NGUITools.AddChild (tagGrid.gameObject, (GameObject)(Resources.Load ("TagItem")));
+				gridItem.GetComponent<TagItem> ().tagLabel.text = (string)data ["UnSubscribed"] [i];
+				gridItem.GetComponent<TagItem> ().selectedSprite.gameObject.SetActive (false);
+			}
+			tagGrid.Reposition ();
+		}
+		w.Dispose ();
 	}
 
 	IEnumerator DeleteCardSync(){
@@ -183,17 +200,32 @@ public class FriendController : MonoBehaviour {
 		w.Dispose ();
 	}
 
-	IEnumerator LoadMessageSync(){
-		WWW getdata = new WWW (url+"getcommoninterests");
-		yield return getdata;
-		if (getdata.error != null) {
-			Debug.Log (getdata.error);
+	/// <summary>
+	/// 异步加载文章
+	/// </summary>
+	/// <returns>The article sync.</returns>
+	private IEnumerator LoadArticleSync(){
+		WWWForm form = new WWWForm ();
+		form.AddField ("userid", userid);
+		WWW w = new WWW (url + "getindividualarticles", form);
+		yield return w;
+		if (w.error != null) {
+			Debug.Log (w.error);
 		} else {
-			print (getdata.text);
-			JsonData data=JsonMapper.ToObject(getdata.text);
-			title.text=WWW.UnEscapeURL((string)data["title"]);
-			content.text=WWW.UnEscapeURL((string)data["abstract"]);
+			Debug.Log (w.text);
+			JsonData data = JsonMapper.ToObject (w.text);
+			for (int i = 0; i < data.Count; i++) {
+				GameObject gridItem = NGUITools.AddChild (articleGrid.gameObject, (GameObject)(Resources.Load ("ArticleItem")));
+				gridItem.GetComponent<ArticleItem> ().titleLabel.text = (string)data [i] ["articletitle"];
+				gridItem.GetComponent<ArticleItem> ().timeLabel.text = (string)data[i] ["articletime"];
+				string s = "";
+				for (int j = 0; j < data [i] ["readerlist"].Count; j++) {
+					s += data [i] ["readerlist"] [j] + " ";
+				}
+				gridItem.GetComponent<ArticleItem> ().whoLabel.text = s;
+			}
+			articleGrid.Reposition ();
 		}
-		getdata.Dispose ();
+		w.Dispose ();
 	}
 }
